@@ -1,0 +1,232 @@
+
+@font-face{
+    src: url(font/TerminusTTF-Bold.ttf);
+    font-family: TerminusTTF-Bold;
+}
+
+*, html, body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.title{
+    padding-top: 100px ;
+    text-align: center;
+    color: rgb(178, 178, 249);
+    font-family: TerminusTTF-Bold;
+    font-size: 35px;
+    
+}
+
+#p{
+    font-family: TerminusTTF-Bold, Papyrus, fantasy;
+    color: #b7a3cb;
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.55rem;
+}
+#nm{
+    text-align: center;
+    font-family: TerminusTTF-Bold, Papyrus, fantasy;
+    background-image: linear-gradient(to right, #4b2a58, #5e2bb7);
+    padding-top: 2rem;
+    border-radius: 1rem;
+    padding-bottom: 2rem;
+    color: #ffffff;
+}
+
+#start{
+    font-size: 25px;
+    
+}
+
+#off_icon{
+    width: 45px;
+    display:none;
+}
+#on_icon{
+    width: 45px;
+}
+#volCtrl{
+    position:fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+}
+
+#volBar{
+    opacity: 0%;
+        
+}
+
+#volCtrl:hover #volBar{
+    opacity: 1;
+}
+.parallax{
+    width: 100%;
+    height: 100vh;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    
+    
+   
+}
+.intro{
+    background-image: url(asset/OneShot\ 8_26_2025\ 5_37_59\ PM.png);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    background-size: 90%;
+    background-position: center;
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+    background-color: black;
+
+}
+.button-start{
+    padding-top: 360px;
+   
+}
+
+.button-start button{
+    padding: 1.5em 1.8em;
+    border: none;
+    color: rgb(0, 0, 0);
+    background-color: rgb(226, 206, 255);
+    border-radius: 80px;
+    font-family: TerminusTTF-Bold;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.button-start button::after{
+    content:'';
+    position: absolute;
+    height: 107%;
+    width: 102%;
+    border-radius: 1000px;
+    z-index: -1;
+}
+.button-start button:hover{
+    z-index: 0;
+    box-shadow: 40px 0 100px#6200ff, -40px 0 100px#3b2075;
+    background-image: linear-gradient(to  right,#d1605b, #dd9894);
+    color: #fefca0;
+}
+.content1{
+    background-image: url("asset/cg_dream1_1.png") ;
+    height: 110vh;
+    background-color: rgb(34, 22, 41);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.content2{
+    background-image: linear-gradient(to bottom , rgb(91, 71, 103), rgb(34,22, 41)); 
+    height: 110vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: rgb(34, 22, 41);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.content3{
+    background-image:url('asset/cg_dream1_2.png') ;
+    height: 110vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: rgb(34, 22, 41);
+}
+.content4{
+    background-image:linear-gradient(to bottom , rgb(91, 71, 103), rgb(34,22, 41)) ;
+    height: 110vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: rgb(34, 22, 41);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content5{
+    background-image: url('asset/cg_dream1_3.png');
+    background-size: contain;
+    height: 110vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: rgb(34, 22, 41);
+}
+
+.content6{
+    background-image: linear-gradient(to bottom , rgb(91, 71, 103), rgb(34,22, 41)) ;
+    height: 110vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: rgb(34, 22, 41);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content7{
+    background-image: url(asset/cg_dream1_4.png);
+    background-size: contain;
+    height: 110vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: rgb(34, 22, 41);
+}
+
+.border-word{
+    border: 6px solid;
+    border-color: #d0cae4;
+    border-radius: 15px;
+    padding: 20px;
+    background: #dd9894;
+    color: #fefca0;
+    font-family: TerminusTTF-Bold, Papyrus, fantasy;
+    
+    
+}
+
+.paper{
+    background-color: rgb(250, 242, 255);
+    border-radius: 1rem;
+    margin-left: 17.5vw;
+    margin-right: 17.5vw;
+    
+}
+.audio{
+    border: 10px solid;
+    border-color: rgb(46, 46, 68);
+    border-radius: 10px;
+    padding-left: 40px;
+    padding-bottom: 100px;
+    background-color: rgb(164, 197, 225);
+}
+
+#sub-title_audio{
+    text-align: left;
+    color: rgb(91, 91, 107);
+    font-family:  Papyrus, fantasy;
+    font-size: 30px;
+    font-style: italic;
+}
+
+.contentend{
+    background-image:linear-gradient(to bottom , rgb(91, 71, 103), rgb(34,22, 41)) ;
+    height: 110vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: rgb(34, 22, 41);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
