@@ -4,6 +4,30 @@ const section = document.querySelectorAll('.parallax');
 
 const volSlider = document.querySelector('#volBar input[type= "range"]');
 const volNum = document.getElementById('volNum');
+const roomCanvas = document.getElementById('roomCanvas');
+const ctx = roomCanvas.getContext('2d');
+
+ctx.fillStyle = '#5b4767';
+ctx.fillRect(0, 0, roomCanvas.width, roomCanvas.height);
+const tileSet = new Image();
+tileSet.src = 'Graphics/Tilesets/finale.png'
+
+tileSet.onload = function(){
+    ctx.imageSmoothingEnabled = false;
+
+    // ranjang + peti + meja komputer
+    ctx.drawImage(
+        tileSet,
+        5, 1400, 255, 390,     // source, angka baru dari Paint 
+        60, 40, 262, 400        // <- coba Opsi 1 dulu
+    );
+
+    ctx.drawImage(
+        tileSet,
+        0, 1880, 255, 390,     
+        315, 40, 262, 400       
+    );
+}
 let currSection = 0;
 let autointerval;
 let auto = false;
@@ -80,3 +104,13 @@ function updateVolume(){
 
 volSlider.addEventListener('input', updateVolume);
 updateVolume();
+
+
+roomCanvas.addEventListener('click', function(e){
+    const rect = roomCanvas.getBoundingClientRect()
+    const scaleX = roomCanvas.width/rect.width
+    const scaleY = roomCanvas.height/rect.height
+    const x = Math.round((e.clientX - rect.left) * scaleX)
+    const y = Math.round((e.clientY - rect.top) * scaleY)
+    console.log(`x : ${x}, y : ${y}` )
+})
