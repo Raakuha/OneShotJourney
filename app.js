@@ -1,6 +1,8 @@
 const button = document.getElementById('start');
 const bgm = document.getElementById('bgm');
 const section = document.querySelectorAll('.parallax');
+const exceptSection = document.querySelectorAll(".parallax:not(.intro)")
+const fade = document.getElementById('fadeOverlay')
 
 const volSlider = document.querySelector('#volBar input[type= "range"]');
 const volNum = document.getElementById('volNum');
@@ -31,12 +33,16 @@ tileSet.onload = function(){
 let currSection = 0;
 let autointerval;
 let auto = false;
-const delay = 3000;
+const delay = 2000;
 bgm.volume = 0.5;
 button.onclick = function (){
     bgm.play();
-
+    
+    exceptSection.forEach(section => {
+        section.classList.remove('hidden-content')
+    })
     startAutoscroll();
+   
 }
 
 
@@ -51,7 +57,15 @@ function startAutoscroll(){
     autointerval = setInterval(() => {
         currSection++;
         if(currSection < section.length){
-            scroll();
+           
+            if(currSection == nikoroomIndex){
+                setTimeout(() => {
+                    nikoRoom();
+                    scroll();
+                    setTimeout(() => fade.classList.remove('active'), 1500)
+                }, 1200)
+            }
+           scroll()
         }else{
             clearInterval(autointerval);
             auto = false;
@@ -60,6 +74,19 @@ function startAutoscroll(){
     },delay );
     
 }
+
+const nikoroomIndex = Array.from(section).indexOf(document.querySelector('.doorscene'))
+
+function nikoRoom(){
+    button.textContent = 'Journey Started';
+    button.classList.add('journey-started');
+
+    const sectionToHide = document.querySelectorAll('.content1, .content2, .content3, .content4, .content5, .content6, .content7, .contentend ');
+    sectionToHide.forEach(function(x){
+        x.classList.add('hidden-content')
+    });
+}
+
 
 function scroll(){
     auto = true;
@@ -70,12 +97,7 @@ function scroll(){
     }, 1000);
 }
 
-window.addEventListener('scroll', () => {
-    if(autointerval && !auto){
-        clearInterval(autointerval );
-        autointerval = null;
-    }
-});
+
 
 function klikMute(){
     const muteBtn = document.getElementById("off_icon");
@@ -106,11 +128,64 @@ volSlider.addEventListener('input', updateVolume);
 updateVolume();
 
 
-roomCanvas.addEventListener('click', function(e){
-    const rect = roomCanvas.getBoundingClientRect()
-    const scaleX = roomCanvas.width/rect.width
-    const scaleY = roomCanvas.height/rect.height
-    const x = Math.round((e.clientX - rect.left) * scaleX)
-    const y = Math.round((e.clientY - rect.top) * scaleY)
-    console.log(`x : ${x}, y : ${y}` )
+const NIKO_SCALE = 0.75
+const FRAME_W = 96 *NIKO_SCALE
+const FRAME_H = 128 *NIKO_SCALE
+const niko  = document.querySelector('.niko')
+niko.style.backgroundImage = "url(Graphics/Characters/niko_finale.png)"
+
+let nikoX = 300, nikoY = 320
+const SPEED = 1.8
+const ROW = {'down' : 0, 'left': 1, 'right': 2, 'up': 3}
+let facing = 'down'
+let animframe = 0;
+let lastframe = 0;
+const FRAME_INTERVAL = 150
+
+const keys = {w: false, a:false, s:false, d:false}
+window.addEventListener('keydown', (e) =>{
+    const k = e.key.toLowerCase()
+    if (k in keys) keys[k] = true
 })
+window.addEventListener('keyup', (e) => {
+    const k = e.key.toLowerCase()
+    if (k in keys) keys[k] = false
+})
+
+function gameLoop(timestamp){
+    let dx = 0, dy = 0
+
+    if(keys.w) dy -= 1
+    if(keys.s) dy += 1
+    if(keys.a) dx -= 1
+    if(keys.d) dx += 1
+
+    const moving = dx !== 0 || dy !== 0
+
+    if(moving){
+        const len = Math.sqrt(dx*dx + dy*dy)
+        nikoX += (dx/len) * SPEED
+        nikoY += (dy /len) *SPEED
+
+        if(dy < 0) facing = 'up'
+        else if (dy > 0) facing = 'down'
+        else if (dx < 0) facing = 'left'
+        else if (dx > 0) facing = 'right'
+
+        if (timestamp - lastframe > FRAME_INTERVAL){
+            animframe = (animframe + 1) % 4
+            lastframe = timestamp
+
+        }
+        
+        
+    }else{
+        animframe = 0
+    }
+    niko.style.left = nikoX + 'px'
+    niko.style.top = nikoY + 'px'
+
+    niko.style.backgroundPosition = `-${animframe *FRAME_W}px -${ROW[facing] * FRAME_H}px `
+    requestAnimationFrame(gameLoop)
+}
+requestAnimationFrame(gameLoop)
