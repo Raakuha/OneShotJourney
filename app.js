@@ -270,3 +270,23 @@ function isColliding(x,y){
         box.y + box.h > s.y
     )
 }
+
+//dialog
+//  List dialog 
+
+//1. intro
+const introDialog = [
+    {potrait: 'Graphics/Faces/niko_distressed.png', text: '. . .'},
+    {potrait: 'Graphics/Faces/niko4.png', text: 'this dream again, i guess i really miss god huh'},
+    {potrait: 'Graphics/Faces/niko_yawn.png', text: 'huaammm'},
+    {potrait: 'Graphics/Faces/niko5.png', text: 'hmm. .'},
+    {potrait: 'Graphics/Faces/niko6.png', text: 'hmm. .'},
+    {potrait: 'Graphics/Faces/niko_pancakes.png', text: 'Mom !'},
+    {potrait: '', text: '. . .'},
+    {potrait: 'Graphics/Faces/niko_what.png', text: 'i wonder where is she'},
+    {potrait: 'Graphics/Faces/niko_shock.png', text: '!?'},
+    {potrait: 'Graphics/Faces/niko_suprised.png', text: 'there is something in computer'},
+]
+
+
+

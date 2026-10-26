@@ -1,9 +1,8 @@
-.album memories/
-asset/
-Audio/
-Data/
-font/
-Fonts/
-Graphics/
-Languages/
-Wallpaper/
+
+node_modules/
+dist/
+.wrangler/
+
+public/asset/
+public/Graphics/
+public/font/
