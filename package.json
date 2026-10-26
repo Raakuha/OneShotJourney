@@ -1,0 +1,24 @@
+{
+  "name": "oneshot-journey",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Website kenangan pribadi bermain OneShot, dibungkus sebagai desktop ala The World Machine.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raakuha/OneShotJourney.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Raakuha/OneShotJourney/issues"
+  },
+  "homepage": "https://github.com/Raakuha/OneShotJourney#readme",
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}

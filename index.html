@@ -10,8 +10,8 @@
     
 </head>
 <body>
-     <div id  = "volCtrl">
-        <button id = "bgm_btn" onclick="klikMute()" > <img id="on_icon" src="/asset/volume.png" alt="ini gambar volume" ><img src="/asset/volume_mute.png" alt="ini gambar mute" id="off_icon"></button>
+     <div id  ="volCtrl">
+        <button id ="bgm_btn"  > <img id="on_icon" src="/asset/volume.png" alt="ini gambar volume" ><img src="/asset/volume_mute.png" alt="ini gambar mute" id="off_icon"></button>
         <div id="volBar">
             <input type="range" min="0" max="50" value="50">
             <span id="volNum">50%</span>
@@ -19,7 +19,7 @@
      </div>
 
      <audio id="bgm" loop>
-        <source src="asset/ost/OneShot OST - My Burden Is Light.mp3"type='audio/mpeg'> 
+        <source src="/asset/ost/OneShot OST - My Burden Is Light.mp3" type='audio/mpeg'> 
      </audio>
     <div class="parallax intro">
         <div class="title">
@@ -79,6 +79,6 @@
     </div>
     <div id="fadeOverlay"></div>
 
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>

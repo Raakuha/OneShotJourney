@@ -3,16 +3,18 @@ const bgm = document.getElementById('bgm');
 const section = document.querySelectorAll('.parallax');
 const exceptSection = document.querySelectorAll(".parallax:not(.intro)")
 const fade = document.getElementById('fadeOverlay')
+const mute_Btn = document.getElementById('bgm_btn')
 
 const volSlider = document.querySelector('#volBar input[type= "range"]');
 const volNum = document.getElementById('volNum');
 const roomCanvas = document.getElementById('roomCanvas');
 const ctx = roomCanvas.getContext('2d');
 
+
 ctx.fillStyle = '#5b4767';
 ctx.fillRect(0, 0, roomCanvas.width, roomCanvas.height);
 const tileSet = new Image();
-tileSet.src = 'Graphics/Tilesets/finale.png'
+tileSet.src = '/Graphics/Tilesets/finale.png'
 
 tileSet.onload = function(){
     ctx.imageSmoothingEnabled = false;
@@ -114,7 +116,7 @@ function klikMute(){
         muteBtn.style.display = 'Inline';
     }
 }
-
+mute_Btn.addEventListener('click', klikMute);
 function updateVolume(){
     const value = volSlider.value
     bgm.volume = value/50
@@ -133,7 +135,7 @@ const NIKO_SCALE = 0.5
 const FRAME_W = 96 *NIKO_SCALE
 const FRAME_H = 128 *NIKO_SCALE
 const niko  = document.querySelector('.niko')
-niko.style.backgroundImage = "url(Graphics/Characters/niko_finale.png)"
+niko.style.backgroundImage = "url(/Graphics/Characters/niko_finale.png)"
 
 let nikoX = 320, nikoY = 240
 const SPEED = 1.8 * 0.667
@@ -276,17 +278,14 @@ function isColliding(x,y){
 
 //1. intro
 const introDialog = [
-    {potrait: 'Graphics/Faces/niko_distressed.png', text: '. . .'},
-    {potrait: 'Graphics/Faces/niko4.png', text: 'this dream again, i guess i really miss god huh'},
-    {potrait: 'Graphics/Faces/niko_yawn.png', text: 'huaammm'},
-    {potrait: 'Graphics/Faces/niko5.png', text: 'hmm. .'},
-    {potrait: 'Graphics/Faces/niko6.png', text: 'hmm. .'},
-    {potrait: 'Graphics/Faces/niko_pancakes.png', text: 'Mom !'},
+    {potrait: '/Graphics/Faces/niko_distressed.png', text: '. . .'},
+    {potrait: '/Graphics/Faces/niko4.png', text: 'this dream again, i guess i really miss god huh'},
+    {potrait: '/Graphics/Faces/niko_yawn.png', text: 'huaammm'},
+    {potrait: '/Graphics/Faces/niko5.png', text: 'hmm. .'},
+    {potrait: '/Graphics/Faces/niko6.png', text: 'hmm. .'},
+    {potrait: '/Graphics/Faces/niko_pancakes.png', text: 'Mom !'},
     {potrait: '', text: '. . .'},
-    {potrait: 'Graphics/Faces/niko_what.png', text: 'i wonder where is she'},
-    {potrait: 'Graphics/Faces/niko_shock.png', text: '!?'},
-    {potrait: 'Graphics/Faces/niko_suprised.png', text: 'there is something in computer'},
+    {potrait: '/Graphics/Faces/niko_what.png', text: 'i wonder where is she'},
+    {potrait: '/Graphics/Faces/niko_shock.png', text: '!?'},
+    {potrait: '/Graphics/Faces/niko_suprised.png', text: 'there is something in computer'},
 ]
-
-
-
