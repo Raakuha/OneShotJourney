@@ -1,6 +1,6 @@
-# My Journey — OneShot Memory Website
+# My Journey OneShot Memory Website
 
-Website interaktif berisi kenangan pribadi saya main **OneShot**, dibungkus dalam bentuk parallax scroll yang nantinya akan berkembang jadi eksplorasi map yang lebih immersive — pengunjung bisa "jalan-jalan" sendiri di map-map dari game-nya, langsung di browser.
+Website interaktif berisi kenangan pribadi saya main **OneShot**, dibungkus dalam bentuk parallax scroll yang nantinya akan berkembang jadi eksplorasi map yang lebih immersive  pengunjung bisa "jalan-jalan" sendiri di map-map dari game-nya, langsung di browser.
 
 Ini proyek pribadi/fan project, bukan produk resmi dan tidak berafiliasi dengan developer OneShot.
 
