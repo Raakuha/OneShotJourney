@@ -138,13 +138,13 @@ const niko  = document.querySelector('.niko')
 niko.style.backgroundImage = "url(/Graphics/Characters/niko_finale.png)"
 
 let nikoX = 320, nikoY = 240
-const SPEED = 1.8 * 0.667
+const SPEED = 120
 const ROW = {'down' : 0, 'left': 1, 'right': 2, 'up': 3}
 let facing = 'down'
 let animframe = 0;
 let lastframe = 0;
 const FRAME_INTERVAL = 150
-
+let lastTime = 0;
 const moveStack = []
 
 const keys = {w: false, a:false, s:false, d:false}
@@ -185,6 +185,9 @@ const ro = new ResizeObserver(applyNikoSize)
 ro.observe(roomCanvas)
 
 function gameLoop(timestamp){
+    const dt = Math.min((timestamp - lastTime) / 1000, 0.05)
+  
+    lastTime = timestamp
     let dx = 0, dy = 0
     const activeKey = moveStack [moveStack.length - 1]
     if(activeKey == 'w') dy -= 1
@@ -197,8 +200,8 @@ function gameLoop(timestamp){
 
     if(moving){
         const len = Math.sqrt(dx*dx + dy*dy)
-        const moveX = (dx/len) * SPEED
-        const moveY = (dy /len) *SPEED
+        const moveX = (dx/len) * SPEED * dt
+        const moveY = (dy /len) *SPEED * dt
 
         if(!isColliding(nikoX + moveX, nikoY)) nikoX += moveX
         if(!isColliding(nikoX, nikoY + moveY)) nikoY += moveY
