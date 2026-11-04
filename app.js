@@ -1,6 +1,7 @@
 import { applyNikoSize } from './script/room.js'
 import { get, set } from './script/save.js';
 import { runBootLog, sleep } from './script/boot.js';
+import { showLogin } from './script/login.js';
 
 const button = document.getElementById('start');
 const bgm = document.getElementById('bgm');
@@ -8,7 +9,7 @@ const section = document.querySelectorAll('.parallax');
 const exceptSection = document.querySelectorAll(".parallax:not(.intro)")
 const fade = document.getElementById('fadeOverlay')
 const mute_Btn = document.getElementById('bgm_btn')
-
+const introTitle = document.querySelector('.title h1')
 const volSlider = document.querySelector('#volBar input[type= "range"]');
 const volNum = document.getElementById('volNum');
 
@@ -152,5 +153,8 @@ powerBtn.addEventListener('click', async () => {
     await runBootLog()
     await sleep(500)
     bootScreen.hidden = true;
+    const name = await showLogin();
+    introTitle.textContent = `Welcome, ${name}`
 
 })
+

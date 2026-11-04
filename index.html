@@ -17,6 +17,17 @@
         </button>
         <img id="boot-bulb" src="/Graphics/Icons/item_start_lightbulb.png" alt="" hidden>
     </main>
+    <main id="login" class="screen" hidden>
+        <form id="login-form" class="login-panel" autocomplete="off">
+            <h1>THE WORLD MACHINE</h1>
+            <p id="login-greet">Who is there?</p>
+            <input id="login-name" type="text" maxlength="16" placeholder="your name" spellcheck="false">
+            <div class="login-actions">
+                <button type="button" id="login-notyou" hidden>Not you?</button>
+                <button type="submit">Enter</button>
+            </div>
+        </form>
+    </main>
      <div id="volCtrl">
         <button id="bgm_btn"  > <img id="on_icon" src="/asset/volume.png" alt="ini gambar volume" ><img src="/asset/volume_mute.png" alt="ini gambar mute" id="off_icon"></button>
         <div id="volBar">
