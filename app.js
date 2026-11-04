@@ -1,5 +1,7 @@
 import { applyNikoSize } from './script/room.js'
 import { get, set } from './script/save.js';
+import { runBootLog, sleep } from './script/boot.js';
+
 const button = document.getElementById('start');
 const bgm = document.getElementById('bgm');
 const section = document.querySelectorAll('.parallax');
@@ -10,6 +12,9 @@ const mute_Btn = document.getElementById('bgm_btn')
 const volSlider = document.querySelector('#volBar input[type= "range"]');
 const volNum = document.getElementById('volNum');
 
+const powerBtn = document.getElementById('power');
+const bootScreen = document.getElementById('boot');
+const bootBulb = document.getElementById('boot-bulb');
 
 let currSection = 0;
 let autointerval;
@@ -133,3 +138,19 @@ const introDialog = [
     {potrait: '/Graphics/Faces/niko_shock.png', text: '!?'},
     {potrait: '/Graphics/Faces/niko_surprised.png', text: 'there is something in computer'},
 ]
+
+
+powerBtn.addEventListener('click', async () => {
+    powerBtn.classList.add('lit');
+    bgm.play().catch(() => {});
+    await sleep(600);
+    powerBtn.hidden = true;
+    bootBulb.hidden = false
+    bootBulb.classList.add('flicker');
+    await sleep(2000);
+    bootBulb.classList.add('docked')
+    await runBootLog()
+    await sleep(500)
+    bootScreen.hidden = true;
+
+})

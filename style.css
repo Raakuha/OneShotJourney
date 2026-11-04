@@ -1,3 +1,7 @@
+[hidden]{
+    display: none !important;
+}
+
 
 @font-face{
     src: url(font/TerminusTTF-Bold.ttf);
@@ -280,4 +284,104 @@
 #fadeOverlay.active{
     opacity: 1;
     pointer-events: auto;
+}
+
+.screen{
+    position:fixed;
+    inset: 0;
+    background: #000;
+    z-index: 2000;
+    display: grid;
+    place-items: center;
+    
+}
+#boot-log{
+    position: absolute;
+    color: #b7a3cb;
+    font-family: TerminusTTF-Bold, monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    top: 36px;
+    left: 36px;
+}
+
+#power{
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 3px solid #3a3448;
+    background: transparent;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: border-color 0.6s , box-shadow 0.6s;
+}
+#power:hover{
+    border-color: #7a7090;
+}
+#power.lit{
+    border-color: #fefca0 ;
+    box-shadow: 0 0 24px #fefca008;
+    
+
+}
+#power img {
+    width: 64px;
+    image-rendering: pixelated;
+    filter: brightness(0.35);
+    transition: filter 0.6s;
+}
+#power:hover img {
+    filter: brightness(0.7);
+}
+#power.lit img {
+    filter: drop-shadow(0 0 10px #fefca0);
+    box-shadow: 0 0 24px #fefca008;
+}
+
+#boot-bulb {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 96px;
+    image-rendering: pixelated;
+    filter: grayscale(1) brightness(0.3);
+    transition: top 0.8s, left 0.8s, translate 0.8s, width 0.8s;
+}
+
+@keyframes flicker {
+    0%   { filter: grayscale(1) brightness(0.3); }
+    25%  { filter: drop-shadow(0 0 16px #fefca0);}
+    27%  { filter: grayscale(0.5) brightness(0.6);}
+    40%  { filter: drop-shadow(0 0 16px #fefca0);}
+    51%  { filter: grayscale(0.5) brightness(0.6);}
+    59%  { filter: drop-shadow(0 0 16px  #fefca0);}
+    68%  { filter: drop-shadow(0 0 16px  #fefca0);}
+    72%  { filter: grayscale(0.5) brightness(0.6);}
+    90%  {filter: drop-shadow(0 0 16px #fefca0);}
+    100% { filter: drop-shadow(0 0 16px #fefca0); }
+}
+
+
+#boot-bulb.flicker {
+    animation: flicker 2s forwards;
+}
+
+#boot-bulb.docked {
+    top: 32px;
+    left: calc(100% - 32px);
+    translate: -100% 0;
+    width: 32px;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    #boot-bulb.flicker {
+        animation: none;
+        filter: drop-shadow(0 0 16px #fefca0);
+    }
+    #boot-bulb {
+        transition: none;
+    }
 }

@@ -6,12 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journey</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/jpg" href="asset/niko_83c.png">
+    <link rel="icon" type="image/png" href="asset/niko_83c.png">
     
 </head>
 <body>
-     <div id  ="volCtrl">
-        <button id ="bgm_btn"  > <img id="on_icon" src="/asset/volume.png" alt="ini gambar volume" ><img src="/asset/volume_mute.png" alt="ini gambar mute" id="off_icon"></button>
+    <main id="boot" class="screen">
+        <pre id="boot-log"></pre>
+        <button id="power" type="button">
+            <img src="/world_machine/desktop_icon/exit.png" alt="Power on">
+        </button>
+        <img id="boot-bulb" src="/Graphics/Icons/item_start_lightbulb.png" alt="" hidden>
+    </main>
+     <div id="volCtrl">
+        <button id="bgm_btn"  > <img id="on_icon" src="/asset/volume.png" alt="ini gambar volume" ><img src="/asset/volume_mute.png" alt="ini gambar mute" id="off_icon"></button>
         <div id="volBar">
             <input type="range" min="0" max="50" value="50">
             <span id="volNum">50%</span>
@@ -79,6 +86,6 @@
     </div>
     <div id="fadeOverlay"></div>
 
-<script type="module" src="app.js"></script>
+<script type="module" src="/app.js"></script>
 </body>
 </html>
