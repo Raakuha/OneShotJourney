@@ -2,6 +2,7 @@ import { applyNikoSize } from './script/room.js'
 import { get, set } from './script/save.js';
 import { runBootLog, sleep } from './script/boot.js';
 import { showLogin } from './script/login.js';
+import { showDesktop } from './script/desktop.js';
 
 const button = document.getElementById('start');
 const bgm = document.getElementById('bgm');
@@ -15,7 +16,7 @@ const volNum = document.getElementById('volNum');
 
 const powerBtn = document.getElementById('power');
 const bootScreen = document.getElementById('boot');
-const bootBulb = document.getElementById('boot-bulb');
+const bootBulb = document.getElementById('sun');
 
 let currSection = 0;
 let autointerval;
@@ -149,12 +150,14 @@ powerBtn.addEventListener('click', async () => {
     bootBulb.hidden = false
     bootBulb.classList.add('flicker');
     await sleep(2000);
+    bootBulb.classList.remove('flicker');
+    bootBulb.classList.add('lit');
     bootBulb.classList.add('docked')
     await runBootLog()
     await sleep(500)
     bootScreen.hidden = true;
     const name = await showLogin();
     introTitle.textContent = `Welcome, ${name}`
-
+    showDesktop();
 })
 

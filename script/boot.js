@@ -66,11 +66,11 @@ function buildBootDevices(d){
     return[
         {text: 'TWMBIOS (C) 2026 RAKUHA ENTERPRISE, INC.', wait: 300},
         {text: '', wait: 100},
-        {text: 'SUN-0826 WEB BIOS Revision 1.0', wait: 200},
-        {text: `CHASSIS  : ${guessChassis(d)}`, wait: 300},
-        {text: `OS       : ${osName(d)} ${d.arch.toUpperCase()}`, wait: 200},
-        {text: `CPU      : ${d.cores} CORES @ 1 SUN`, wait: 200},
-        {text: `GPU      : ${d.gpu.toUpperCase()}`, wait: 200},
+        {text: 'SUN-0826 WEB BIOS Revision 1.0', wait: 350},
+        {text: `CHASSIS  : ${guessChassis(d)}`, wait: 340},
+        {text: `OS       : ${osName(d)} ${d.arch.toUpperCase()}`, wait: 330},
+        {text: `CPU      : ${d.cores} CORES @ 1 SUN`, wait: 330},
+        {text: `GPU      : ${d.gpu.toUpperCase()}`, wait: 480},
         {text: `DISPLAY  : ${d.width}x${d.height} @ ${d.scale}x`, wait: 200},
         {text: `POWER    : ${powerLine(d.battery)}`, wait: 200},
         {text: `LANGUAGE : ${d.lang.toUpperCase()}`, wait: 200},
@@ -107,4 +107,42 @@ export async function runBootLog(){
 
         await sleep(line.wait);        
     }
+}
+export async function powerOff() {
+    // ambil elemen: #boot, #power, #boot-log, #sun, #desktop, #bgm
+    const boot = document.getElementById('boot');
+    const powerBtn = document.getElementById('power');
+    const bootLog = document.getElementById('boot-log');
+    const sunLamp = document.getElementById('sun');
+    const dekstop = document.getElementById('desktop');
+    const bgm = document.getElementById('bgm');
+
+    
+    // 1. sembunyikan desktop, tampilkan layar boot (hitam)
+    //    tapi tombol power tetap disembunyikan, dan isi boot-log dikosongkan
+    dekstop.hidden = true;
+    boot.hidden =false;
+    powerBtn.hidden = true;
+    bootLog.textContent = '';
+
+    // 2. hapus class 'docked' dari sun → bohlam kembali ke tengah
+    sunLamp.classList.remove('docked');
+
+    // 3. await sleep(800)                 ← sama dengan transition di CSS
+    await sleep(800)
+    // 4. hapus class 'lit' dari sun       → cahaya memudar
+    sunLamp.classList.remove('lit');
+    // 5. await sleep(600)
+    await sleep(600);
+    // 6. jeda sebentar dalam keadaan mati, misalnya await sleep(400)
+    await sleep(400)
+    // 7. sembunyikan sun
+    sunLamp.hidden = true;
+    // 8. hentikan musik: pause() dan currentTime = 0
+    bgm.pause();
+    bgm.currentTime = 0;
+
+    // 9. siapkan tombol power: hapus class 'lit', tampilkan tombol
+    powerBtn.classList.remove('lit');
+    powerBtn.hidden = false;
 }

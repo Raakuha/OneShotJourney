@@ -339,28 +339,25 @@
     box-shadow: 0 0 24px #fefca008;
 }
 
-#boot-bulb {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    width: 96px;
-    image-rendering: pixelated;
-    filter: grayscale(1) brightness(0.3);
-    transition: top 0.8s, left 0.8s, translate 0.8s, width 0.8s;
-}
 
 @keyframes flicker {
-    0%   { filter: grayscale(1) brightness(0.3); }
-    25%  { filter: drop-shadow(0 0 16px #fefca0);}
-    27%  { filter: grayscale(0.5) brightness(0.6);}
-    40%  { filter: drop-shadow(0 0 16px #fefca0);}
-    51%  { filter: grayscale(0.5) brightness(0.6);}
-    59%  { filter: drop-shadow(0 0 16px  #fefca0);}
-    68%  { filter: drop-shadow(0 0 16px  #fefca0);}
-    72%  { filter: grayscale(0.5) brightness(0.6);}
-    90%  {filter: drop-shadow(0 0 16px #fefca0);}
-    100% { filter: drop-shadow(0 0 16px #fefca0); }
+    0%   { opacity: 0;}    /* mati */
+    10%  { opacity: 1;} /* idup */
+    11%  { opacity: 0.3;}
+    22%  { opacity: 1;}
+    25%  { opacity: 0.3;}
+    50%  { opacity: 0.35;}
+    88%  { opacity: 0.35;}
+    90%  { opacity: 1;}
+    100% { opacity: 1;}
+}
+
+#sun.flicker .sun-on {
+    animation: flicker 2s forwards;
+}
+@media(prefers-reduced-motion: reduce){
+    #sun.flicker .sun-on{animation: none; opacity: 1;}
+    #sun, .sun-on{transition:none;}
 }
 
 .login-panel{
@@ -437,24 +434,89 @@
     75% { transform: translateX(6px); }
 }
 
-#boot-bulb.flicker {
-    animation: flicker 2s forwards;
+
+#sun {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 96px;
+    aspect-ratio: 1;
+    z-index: 3000;
+    pointer-events: none;
+    transition: top 0.8s, left 0.8s, translate 0.8s, width 0.8s;
 }
 
-#boot-bulb.docked {
+#sun img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    image-rendering: pixelated;
+}
+
+#sun .sun-on {
+    opacity: 0;
+    filter: drop-shadow(0 0 16px #fefca0);
+    transition: opacity 0.6s;
+}
+
+#sun.lit .sun-on {
+    opacity: 1;
+}
+
+#sun.docked {
     top: 32px;
     left: calc(100% - 32px);
     translate: -100% 0;
     width: 32px;
 }
 
+#desktop{
+    display: block;
+    background: linear-gradient(50deg,#0d0814, #402f4d);
+}
+/* #desktop-icons
+   - position absolute
+   - inset 0 (menutupi seluruh desktop) */
+#desktop-icons{
+    position:absolute;
+    inset: 0;
+}
+/* .desk-icon
+   - position absolute (posisi left/top diatur dari JS)
+   - lebar 88px
+   - flex kolom: display flex, flex-direction column,
+     align-items center, gap 6px  → gambar di atas, label di bawah
+   - padding 6px 2px
+   - background transparan, border 1px solid transparan
+   - warna teks #f2eefa, font Terminus, ukuran 13px
+   - cursor default */
+.desk-icon{
+    position: absolute;
+    width: 88px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 2px;
+    background: transparent;
+    border: 1px solid ;
+    color: #f2eefa;
+    font-family: TerminusTTF-Bold, monospace;
+    cursor: default;
 
-@media (prefers-reduced-motion: reduce) {
-    #boot-bulb.flicker {
-        animation: none;
-        filter: drop-shadow(0 0 16px #fefca0);
-    }
-    #boot-bulb {
-        transition: none;
-    }
+}
+
+.desk-icon img{
+    width: 32px;
+    image-rendering: pixelated;
+}
+
+.desk-icon:hover{
+    background: #7b66b539;
+}
+
+.desk-icon.selected{
+    background: #63538177;
+    border-color: #7260ae;
 }

@@ -15,7 +15,7 @@
         <button id="power" type="button">
             <img src="/world_machine/desktop_icon/exit.png" alt="Power on">
         </button>
-        <img id="boot-bulb" src="/Graphics/Icons/item_start_lightbulb.png" alt="" hidden>
+        
     </main>
     <main id="login" class="screen" hidden>
         <form id="login-form" class="login-panel" autocomplete="off">
@@ -27,6 +27,9 @@
                 <button type="submit">Enter</button>
             </div>
         </form>
+    </main>
+    <main id="desktop" class="screen" hidden>
+        <div id="desktop-icons"></div>
     </main>
      <div id="volCtrl">
         <button id="bgm_btn"  > <img id="on_icon" src="/asset/volume.png" alt="ini gambar volume" ><img src="/asset/volume_mute.png" alt="ini gambar mute" id="off_icon"></button>
@@ -96,7 +99,10 @@
         
     </div>
     <div id="fadeOverlay"></div>
-
+    <div id="sun" hidden>
+        <img class="sun-off" src="/Graphics/Icons/item_start_lightbulb_off.png" alt="">
+        <img class="sun-on" src="/Graphics/Icons/item_start_lightbulb.png" alt="">
+    </div>
 <script type="module" src="/app.js"></script>
 </body>
 </html>
