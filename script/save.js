@@ -2,6 +2,8 @@ const KEY = 'osj.save'
 const defaults = {
     volume: 50,
     muted: false,
+    name: '',
+    iconPos:{},
 }
 
 

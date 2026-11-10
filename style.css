@@ -45,6 +45,7 @@
     
 }
 
+
 #off_icon{
     width: 45px;
     display:none;
@@ -504,12 +505,14 @@
     color: #f2eefa;
     font-family: TerminusTTF-Bold, monospace;
     cursor: default;
+    user-select: none;
 
 }
 
 .desk-icon img{
     width: 32px;
     image-rendering: pixelated;
+    pointer-events: none;
 }
 
 .desk-icon:hover{

@@ -1,11 +1,15 @@
 import { powerOff } from './boot.js'
+import { get, set } from './save.js'
+const  PAD = 16;
+const CELL = 96;
+const DRAG_START = 4;
 
 const ICONS = [
-    { label: 'OneShot.exe',  icon: '/world_machine/desktop_icon/oneshot.png',   open: openOneShot },
-    { label: 'README.txt',   icon: '/world_machine/desktop_icon/doc.png',       open: () => console.log('buka README') },
-    { label: 'about_me.txt', icon: '/world_machine/desktop_icon/doc.png',       open: () => console.log('buka about_me') },
-    { label: 'Settings',     icon: '/world_machine/desktop_icon/customize.png', open: () => console.log('buka Settings') },
-    { label: 'Shut down',    icon: '/world_machine/desktop_icon/exit.png',      open: powerOff },
+    { id: 'oneshot', label: 'OneShot.exe',  icon: '/world_machine/desktop_icon/oneshot.png',   open: openOneShot },
+    { id: 'readme', label: 'README.txt',   icon: '/world_machine/desktop_icon/doc.png',       open: () => console.log('buka README') },
+    { id: 'about', label: 'about_me.txt', icon: '/world_machine/desktop_icon/doc.png',       open: () => console.log('buka about_me') },
+    { id: 'settings', label: 'Settings',     icon: '/world_machine/desktop_icon/customize.png', open: () => console.log('buka Settings') },
+    { id: 'shutdown', label: 'Shut down',    icon: '/world_machine/desktop_icon/exit.png',      open: powerOff },
 ]
 
 function openOneShot() {
@@ -13,6 +17,68 @@ function openOneShot() {
     document.getElementById('desktop').hidden = true
 }
 
+function enableDrag(btn, item, desktop){
+    btn.addEventListener('pointerdown', (e) => {
+        if(e.button !== 0){
+            return;
+        }
+        
+        const sx = e.clientX, sy = e.clientY;
+        const ox = btn.offsetLeft, oy = btn.offsetTop;
+        let dragging = false;
+        btn.setPointerCapture(e.pointerId);
+       
+        function onMove(ev){
+            const dx = ev.clientX - sx, dy = ev.clientY - sy;
+            if(!dragging && Math.hypot(dx, dy) < DRAG_START ){
+                return;
+            }
+
+            dragging = true;
+            btn.classList.add('dragging');
+            btn.style.left = ox + dx + 'px';
+            btn.style.top = oy+dy + 'px';
+        }
+        function onUp(){
+            btn.removeEventListener('pointermove', onMove);
+            btn.removeEventListener('pointerup', onUp);
+            btn.removeEventListener('pointercancel', onUp);
+
+            if(!dragging){
+                return;
+            }
+            btn.classList.remove('dragging');
+            let kolom = Math.round((btn.offsetLeft - PAD) / CELL);
+            let baris = Math.round((btn.offsetTop - PAD) / CELL);
+            
+
+            const kolomMaks = Math.floor((desktop.clientWidth - PAD - CELL) / CELL);
+            const barisMaks = Math.floor((desktop.clientHeight - PAD - CELL) / CELL);
+            kolom = Math.max(0, Math.min(kolom, kolomMaks));
+            // b. batasi baris dengan cara yang sama seperti kolom, tapi pakai barisMaks
+            baris = Math.max(0, Math.min(baris, barisMaks));
+
+            // c. hitung posisi rapi:
+            //    const x = PAD + kolom × CELL
+            //    const y = PAD + baris × CELL
+            const x = PAD + kolom * CELL
+            const y = PAD + baris * CELL
+            // d. atur style.left dan style.top btn ke x dan y (ingat 'px')
+            btn.style.left = x + 'px';
+            btn.style.top = y +'px';
+            // e. simpan ke save:
+            //    set('iconPos', { ...get('iconPos'), [item.id]: { x, y } })
+            set('iconPos', { ...get('iconPos'), [item.id] : {x, y}});
+
+        }   
+              // 6. pasang onMove ke event 'pointermove' di btn
+             //    pasang onUp ke event 'pointerup' di btn
+            //    pasang onUp juga ke event 'pointercancel' di btn
+            btn.addEventListener('pointermove', onMove)
+            btn.addEventListener('pointerup', onUp);
+            btn.addEventListener('pointercancel', onUp);
+    })
+}
 
 export function showDesktop(){
     // ambil #desktop, simpan di variabel desktop
@@ -52,7 +118,7 @@ export function showDesktop(){
         const img = document.createElement('img');
         img.src = item.icon;
         img.alt = '';
-
+        img.draggable = false;
         // 3. buat elemen span baru, simpan di variabel span
         //    - isi textContent-nya dengan nama milik item (item.label)
 
@@ -63,14 +129,21 @@ export function showDesktop(){
         button.addEventListener('click', () => select(button))
         button.append(img, span);
 
-        // 5. atur posisi btn lewat style:
-        //    - left = 16px
-        //    - top  = 16 + i × 96, ditambah 'px' (pakai template literal)
-        button.style.left = '16px';
-        button.style.top =  `${16 + i*96}px`
+        // 5. posisi ikon:
+        //    a. ambil posisi tersimpan untuk ikon ini → get('iconPos')[item.id]
+        //    b. kalau tidak ada (pakai ??), pakai posisi default:
+        //         { x: PAD, y: PAD + i * CELL }
+        //    c. simpan hasilnya di satu variabel, misalnya pos
+        //    d. style.left = pos.x + 'px'
+        //       style.top  = pos.y + 'px'   (atau pakai template literal)
+        const savedPos = get('iconPos')[item.id];
+        const pos = savedPos ?? {x: PAD, y: PAD + i*CELL};
+        button.style.left = pos.x + 'px';
+        button.style.top  = pos.y + 'px';
 
         // 5b. pasang event 'dblclick' di btn:
         //     saat terjadi → jalankan fungsi open milik item (item.open())
+        
         button.addEventListener('dblclick', () =>{
             item.open();
         });
@@ -80,10 +153,8 @@ export function showDesktop(){
                 item.open();
             }
         })
-        // 5c. pasang event 'keydown' di btn:
-        //     handler-nya menerima parameter e
-        //     kalau e.key sama dengan 'Enter' → jalankan item.open()
-        // 6. tempelkan btn ke wadah ikon (append)
+        enableDrag(button, item, desktop)
+       
         desktopIcon.append(button);
     })
     desktop.onclick = (e) =>{
