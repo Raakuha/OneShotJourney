@@ -1,3 +1,4 @@
+import { closeAll } from './windows.js';
 export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 function cleanGPU(raw) {
     const match = raw.match(/ANGLE \([^,]+, ([^(,]+)/)
@@ -117,7 +118,7 @@ export async function powerOff() {
     const dekstop = document.getElementById('desktop');
     const bgm = document.getElementById('bgm');
 
-    
+    closeAll();
     // 1. sembunyikan desktop, tampilkan layar boot (hitam)
     //    tapi tombol power tetap disembunyikan, dan isi boot-log dikosongkan
     dekstop.hidden = true;

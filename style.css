@@ -523,3 +523,56 @@
     background: #63538177;
     border-color: #7260ae;
 }
+
+
+#windows{
+    position:absolute;
+    inset: 0;
+    pointer-events: none;
+}
+.window{
+    position:absolute;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    background: #221629;
+    border: 2px solid #d0cae4;
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.45); 
+}
+.win-titlebar{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 28px;
+    padding-left: 8px;
+    padding-right: 4px;
+    background: linear-gradient(#4a2b58, #5e2bb7);
+    color: #f2eefa;
+    font-family: TerminusTTF-Bold;
+}
+
+.win-title{
+    flex: 1;
+
+}
+
+.win-close{
+    width: 22px;
+    height: 20px;
+    border: 1px solid #d0cae4;
+    background: #221629;
+    color: #fffefe;
+    cursor: pointer;
+
+}
+.win-close:hover{
+    background: #d1605b;
+
+}
+.win-body{
+    flex: 1;
+    overflow: auto;
+    padding: 12px;
+    color: #f2eefa;
+    font-family: TerminusTTF-Bold;
+}

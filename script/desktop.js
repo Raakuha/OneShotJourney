@@ -1,14 +1,16 @@
 import { powerOff } from './boot.js'
 import { get, set } from './save.js'
+import { openWindow } from './windows.js';
+
 const  PAD = 16;
 const CELL = 96;
 const DRAG_START = 4;
 
 const ICONS = [
     { id: 'oneshot', label: 'OneShot.exe',  icon: '/world_machine/desktop_icon/oneshot.png',   open: openOneShot },
-    { id: 'readme', label: 'README.txt',   icon: '/world_machine/desktop_icon/doc.png',       open: () => console.log('buka README') },
-    { id: 'about', label: 'about_me.txt', icon: '/world_machine/desktop_icon/doc.png',       open: () => console.log('buka about_me') },
-    { id: 'settings', label: 'Settings',     icon: '/world_machine/desktop_icon/customize.png', open: () => console.log('buka Settings') },
+    { id: 'readme', label: 'README.txt',   icon: '/world_machine/desktop_icon/doc.png',       open: () => openWindow({ title: 'README.txt', content: placeholder('Isi README menyusul.') })},
+    { id: 'about', label: 'about_me.txt', icon: '/world_machine/desktop_icon/doc.png',       open: () => openWindow({title: 'AboutMe.txt', content: placeholder('Ini aku Rakha')})},
+    { id: 'settings', label: 'Settings',     icon: '/world_machine/desktop_icon/customize.png', open: () =>  openWindow({title: 'Settings', content: placeholder('Ini window pengaturan harusnya')}) },
     { id: 'shutdown', label: 'Shut down',    icon: '/world_machine/desktop_icon/exit.png',      open: powerOff },
 ]
 
@@ -162,4 +164,10 @@ export function showDesktop(){
             select(null);
         }
     }
+}
+
+function placeholder(text){
+    const el = document.createElement('p');
+    el.textContent = text;
+    return el;
 }
