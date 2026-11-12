@@ -549,6 +549,8 @@
     background: linear-gradient(#4a2b58, #5e2bb7);
     color: #f2eefa;
     font-family: TerminusTTF-Bold;
+    user-select: none;
+    touch-action: none;
 }
 
 .win-title{
@@ -575,4 +577,8 @@
     padding: 12px;
     color: #f2eefa;
     font-family: TerminusTTF-Bold;
+}
+
+.window-dragging{
+    opacity: 0.92;
 }

@@ -1,6 +1,46 @@
 
 
 let count = 0
+function clamp(v, low, high){
+    return  Math.max(low, Math.min(v, high));
+}
+
+function enableDragWindow(win, titlebar, area){
+    titlebar.addEventListener('pointerdown', (e) =>{
+        if ( e.button !== 0){
+          
+            return;
+        }
+
+        if(e.target.closest('button')){
+            
+            return;
+        }
+        e.preventDefault();
+        const sx = e.clientX, sy = e.clientY;
+        const ox = win.offsetLeft, oy = win.offsetTop;
+        titlebar.setPointerCapture(e.pointerId);
+        win.classList.add('dragging');
+        function onMove(ev){
+            const dx = ev.clientX - sx, dy = ev.clientY - sy;
+            const x = clamp(ox +dx, 80 - win.offsetWidth,  area.clientWidth - 80)
+            const y = clamp(oy +dy, 0,  area.clientHeight - 28);
+            win.style.left = x + 'px';
+            win.style.top = y + 'px';
+
+        }
+        function onUp(){
+            titlebar.removeEventListener('pointermove', onMove);
+            titlebar.removeEventListener('pointerup', onUp);
+            titlebar.removeEventListener('pointercancel', onUp);
+            win.classList.remove('dragging');
+        }
+        titlebar.addEventListener('pointermove', onMove);
+        titlebar.addEventListener('pointerup', onUp);
+        titlebar.addEventListener('pointercancel', onUp);
+
+    })
+}
 
 export function openWindow({ title, content, width = 480, height = 320 }) {
     // 1. ambil wadah #windows
@@ -28,7 +68,7 @@ export function openWindow({ title, content, width = 480, height = 320 }) {
     win_sec.style.width = width + 'px';
     win_sec.style.height = height + 'px';
 
-    // 7. posisi bertingkat supaya jendela baru tidak menutupi tepat jendela lama:
+    // 7. posisi bertingkat supaya jendela baru tidak menutupi tepat jendela lama: 
     //    left = 120 + (count % 8) × 28
     //    top  = 40  + (count % 8) × 28
     //    lalu tambah count satu
@@ -37,7 +77,8 @@ export function openWindow({ title, content, width = 480, height = 320 }) {
     count += 1;
     // 8. tempelkan el ke wadah #windows
     windows.append(win_sec);
-
+    const titlebar = win_sec.querySelector('.win-titlebar');
+    enableDragWindow(win_sec, titlebar, windows);
     // 9. buat fungsi close() yang menghapus el dari halaman: el.remove()
     function close(){
         win_sec.remove();
