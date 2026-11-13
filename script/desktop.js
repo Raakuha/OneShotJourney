@@ -8,9 +8,9 @@ const DRAG_START = 4;
 
 const ICONS = [
     { id: 'oneshot', label: 'OneShot.exe',  icon: '/world_machine/desktop_icon/oneshot.png',   open: openOneShot },
-    { id: 'readme', label: 'README.txt',   icon: '/world_machine/desktop_icon/doc.png',       open: () => openWindow({ title: 'README.txt', content: placeholder('Isi README menyusul.') })},
-    { id: 'about', label: 'about_me.txt', icon: '/world_machine/desktop_icon/doc.png',       open: () => openWindow({title: 'AboutMe.txt', content: placeholder('Ini aku Rakha')})},
-    { id: 'settings', label: 'Settings',     icon: '/world_machine/desktop_icon/customize.png', open: () =>  openWindow({title: 'Settings', content: placeholder('Ini window pengaturan harusnya')}) },
+    { id: 'readme', label: 'README.txt',   icon: '/world_machine/desktop_icon/doc.png',       open: () => openWindow({ id: 'readme' ,title: 'README.txt', content: placeholder('Isi README menyusul.') })},
+    { id: 'about', label: 'about_me.txt', icon: '/world_machine/desktop_icon/doc.png',       open: () => openWindow({id: 'about_me' ,title: 'AboutMe.txt', content: placeholder('Ini aku Rakha')})},
+    { id: 'settings', label: 'Settings',     icon: '/world_machine/desktop_icon/customize.png', open: () =>  openWindow({id: 'settings' ,title: 'Settings', content: placeholder('Ini window pengaturan harusnya')}) },
     { id: 'shutdown', label: 'Shut down',    icon: '/world_machine/desktop_icon/exit.png',      open: powerOff },
 ]
 

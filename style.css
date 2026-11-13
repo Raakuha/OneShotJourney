@@ -501,7 +501,7 @@
     gap: 6px;
     padding: 6px 2px;
     background: transparent;
-    border: 1px solid ;
+    border: 1px solid transparent;
     color: #f2eefa;
     font-family: TerminusTTF-Bold, monospace;
     cursor: default;
@@ -543,11 +543,11 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    height: 28px;
+    height: 36px;
     padding-left: 8px;
-    padding-right: 4px;
-    background: linear-gradient(#4a2b58, #5e2bb7);
-    color: #f2eefa;
+    padding-right: 2px;
+    background: #2f1f3b;
+    color: #b7a3cb;
     font-family: TerminusTTF-Bold;
     user-select: none;
     touch-action: none;
@@ -558,19 +558,7 @@
 
 }
 
-.win-close{
-    width: 22px;
-    height: 20px;
-    border: 1px solid #d0cae4;
-    background: #221629;
-    color: #fffefe;
-    cursor: pointer;
 
-}
-.win-close:hover{
-    background: #d1605b;
-
-}
 .win-body{
     flex: 1;
     overflow: auto;
@@ -579,6 +567,48 @@
     font-family: TerminusTTF-Bold;
 }
 
-.window-dragging{
+.window.dragging{
     opacity: 0.92;
+}
+
+.win-btn{
+    width: 32px;
+    height: 32px;
+    background-image: url('/world_machine/window_buttons.png');
+    background-size: 160px  32px;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    border: 0;
+    cursor: pointer;
+    background-color: transparent;
+
+}
+.win-close{
+  background-position: -64px 0;
+}
+
+.win-min{
+background-position: 0 0;
+}
+
+.win-max{
+    background-position: -32px 0;
+}
+.win-btn:hover{
+    background-color:  #df9eec;
+}
+.win-close:hover{
+    background-color: #d1605b;
+
+}
+.window.active .win-titlebar{
+    background: linear-gradient(#4a2b58, #5e2bb7);
+    color: #f2eefa;
+}
+.window.maximized{
+    left:  0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height:  100% !important;
+     box-shadow: none; 
 }
