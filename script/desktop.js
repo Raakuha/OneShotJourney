@@ -1,5 +1,6 @@
 import { powerOff } from './boot.js'
 import { get, set } from './save.js'
+import { initTaskbar } from './taskbar.js';
 import { openWindow } from './windows.js';
 
 const  PAD = 16;
@@ -87,7 +88,7 @@ export function showDesktop(){
     // ambil #desktop-icons, simpan di variabel iconsBox
     const desktop = document.getElementById('desktop');
     const desktopIcon = document.getElementById('desktop-icons');
-
+    initTaskbar(ICONS);
     // tampilkan desktop
     desktop.hidden = false;
     // kosongkan iconsBox: iconsBox.textContent = ''
@@ -155,7 +156,7 @@ export function showDesktop(){
                 item.open();
             }
         })
-        enableDrag(button, item, desktop)
+        enableDrag(button, item, desktopIcon)
        
         desktopIcon.append(button);
     })

@@ -2,6 +2,113 @@
     display: none !important;
 }
 
+:root  {
+    --taskbar-h : 40px;
+}
+
+
+
+#windows{
+    z-index: 1;
+}
+
+
+#taskbar{
+    display: flex;
+    position:absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--taskbar-h);
+    z-index: 2;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding: 0 6px;
+    background-color: #0d0814;
+    border-top: 2px solid #d0cae4;
+    font-family: TerminusTTF-Bold;
+}
+#tasks{
+    flex: 1;
+    flex-direction: row;
+    gap: 4px;
+    overflow: hidden;
+}
+#tray{
+    padding-right:  44px;
+    color: #3d2d5ae1;
+}
+#clock-box{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.2;
+}
+
+#clock{
+    font-size: 13px;
+    color: #f2eefa;
+}
+
+#date{
+    font-size: 11px;
+    color: #b7a3cb;
+}
+
+#start-btn, .task{
+    max-width: 180px;
+    height: 30px;
+    padding: 0 10px;
+    border: 2px solid #d0cae4;
+    color: rgb(0, 0, 0);
+    background-color: rgba(105, 87, 133, 0.863);
+    font-family: TerminusTTF-Bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+.task.active{
+    background-color: #5c3fff;
+}
+.task.minimized{
+    opacity: 0.67;
+}
+
+#start-menu{
+    position: absolute;
+    left: 6px;
+    bottom: calc(var(--taskbar-h) +  4px);
+    z-index: 3;
+    width: 200px;
+    background: #221629;
+    border: 2px solid #d0cae4;
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.45);
+}
+
+#start-menu button{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 10px;
+    background-color: transparent;
+    border: 0;
+    color: #f2eefa;
+    font-family: TerminusTTF-Bold, monospace;
+    text-align: left;
+    cursor: pointer;
+
+}
+#start-menu button:hover{
+    background-color: #5e2bb7;
+}
+#start-menu img{
+    width: 24px;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
 
 @font-face{
     src: url(font/TerminusTTF-Bold.ttf);
@@ -101,8 +208,8 @@
     border: none;
     color: rgb(0, 0, 0);
     background-color: rgb(226, 206, 255);
-    border-radius: 80px;
     font-family: TerminusTTF-Bold;
+    border-radius: 80px;
     position: relative;
     display: flex;
     justify-content: center;
@@ -465,33 +572,18 @@
     opacity: 1;
 }
 
-#sun.docked {
-    top: 32px;
-    left: calc(100% - 32px);
-    translate: -100% 0;
-    width: 32px;
-}
+
 
 #desktop{
     display: block;
     background: linear-gradient(50deg,#0d0814, #402f4d);
 }
-/* #desktop-icons
-   - position absolute
-   - inset 0 (menutupi seluruh desktop) */
+
 #desktop-icons{
     position:absolute;
-    inset: 0;
+    inset: 0 0 var(--taskbar-h) 0 ;
 }
-/* .desk-icon
-   - position absolute (posisi left/top diatur dari JS)
-   - lebar 88px
-   - flex kolom: display flex, flex-direction column,
-     align-items center, gap 6px  → gambar di atas, label di bawah
-   - padding 6px 2px
-   - background transparan, border 1px solid transparan
-   - warna teks #f2eefa, font Terminus, ukuran 13px
-   - cursor default */
+
 .desk-icon{
     position: absolute;
     width: 88px;
@@ -527,7 +619,7 @@
 
 #windows{
     position:absolute;
-    inset: 0;
+    inset: 0 0 var(--taskbar-h) 0 ;
     pointer-events: none;
 }
 .window{
@@ -611,4 +703,18 @@ background-position: 0 0;
     width: 100% !important;
     height:  100% !important;
      box-shadow: none; 
+}
+/* #sun.docked
+   - top: calc(100% - var(--taskbar-h) / 2)   → tengah tinggi taskbar
+   - left: calc(100% - 12px)                  → dekat tepi kanan
+   - translate: -100% -50%
+   - width 28px
+   (transition top/left yang sudah ada otomatis membuat lampu
+    "terbang" dari tengah layar ke tray saat boot) */
+
+#sun.docked{
+    top: calc(100% - var(--taskbar-h) / 2);
+    left: calc(100% - 12px);
+    translate: -100% -50%;
+    width: 28px;
 }

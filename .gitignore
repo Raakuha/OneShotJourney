@@ -1,9 +1,8 @@
-
 node_modules/
 dist/
 .wrangler/
-
 public/asset/
 public/Graphics/
 public/font/
-public/world_machine
+public/world_machine/
+CLAUDE.md

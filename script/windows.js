@@ -3,6 +3,17 @@ let count = 0
 const wins = new Map();
 let zTop = 10;
 let active = null;
+const listeners = [];
+
+export function onChange(fn){
+    listeners.push(fn);
+}
+function notify(){
+    for(const fn of listeners){
+        fn([...wins.values()], active);
+    }
+}
+
 
 function clamp(v, low, high){
     return  Math.max(low, Math.min(v, high));
@@ -101,6 +112,7 @@ export function openWindow({ id, title, content, width = 480, height = 320 }) {
                 win_sec.classList.add('active');
                 zTop += 1;
                 win_sec.style.zIndex = zTop;
+                notify();
             }
 
             
@@ -113,6 +125,7 @@ export function openWindow({ id, title, content, width = 480, height = 320 }) {
             win_sec.classList.remove('active');
             active = null;
         }
+        notify();
     }
         
 
@@ -132,6 +145,7 @@ export function openWindow({ id, title, content, width = 480, height = 320 }) {
         if(active === win_sec){
             active = null
         }
+        notify();
     }
     const closeButton = win_sec.querySelector('.win-close')
     closeButton.addEventListener('click', close);
@@ -151,7 +165,7 @@ export function openWindow({ id, title, content, width = 480, height = 320 }) {
     // 4. pointerdown di elemen jendela (di mana saja di dalamnya) → focus()
     win_sec.addEventListener('pointerdown', focus);
     // 5. di akhir, sebelum return: panggil focus() sekali, supaya jendela baru langsung aktif
-    const win = { win_sec, body, close, focus, minimize, restore, toggleMax };
+    const win = { win_sec, body, close, focus, minimize, restore, toggleMax, title };
     wins.set(id, win);
 
     focus();
@@ -165,5 +179,5 @@ export function closeAll(){
     count = 0;
     wins.clear();
     active = null;
-
+    notify();
 }
