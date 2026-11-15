@@ -1,130 +1,149 @@
-const roomCanvas = document.getElementById('roomCanvas');
-const ctx = roomCanvas.getContext('2d');
 
-
-ctx.fillStyle = '#5b4767';
-ctx.fillRect(0, 0, roomCanvas.width, roomCanvas.height);
-const tileSet = new Image();
-tileSet.src = '/Graphics/Tilesets/finale.png'
-
-tileSet.onload = function(){
-    ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(tileSet,
-        5, 1400, 255, 390,
-        60, 40, 262, 400);
-
-    ctx.drawImage(tileSet,
-        0, 1880, 255, 390,
-        315, 40, 262, 400);
-
-}
 
 const NIKO_SCALE = 0.5
 const FRAME_W = 96 *NIKO_SCALE
 const FRAME_H = 128 *NIKO_SCALE
-const niko  = document.querySelector('.niko')
-niko.style.backgroundImage = "url(/Graphics/Characters/niko_finale.png)"
 
-let nikoX = 320, nikoY = 240
 const SPEED = 120
 const ROW = {'down' : 0, 'left': 1, 'right': 2, 'up': 3}
-let facing = 'down'
-let animframe = 0;
-let lastframe = 0;
+
 const FRAME_INTERVAL = 150
-let lastTime = 0;
-const moveStack = []
 
 const keys = {w: false, a:false, s:false, d:false}
 
-window.addEventListener('keydown', (e) =>{
-    const k = e.key.toLowerCase()
-    if (k in keys) {
-        keys[k] = true
-        if(!moveStack.includes(k)) moveStack.push(k)
 
-    }
-})
-window.addEventListener('keyup', (e) => {
-    const k = e.key.toLowerCase()
-    if (k in keys) {
-        keys[k] = false
-        const idx = moveStack.indexOf(k)
-        if (idx !== -1) moveStack.splice(idx, 1)
-    } 
-})
+        export class Room {
+            constructor (container){
+                container.innerHTML = `
+                        <div class="room-wrapper">   
+                            <canvas class = "room-canvas" width="640" height="480"></canvas>
+                            <div class="niko"></div>
+                        </div>`;
+                
+                this.canvas = container.querySelector('.room-canvas');
+                this.niko = container.querySelector('.niko');
+                this.niko.style.backgroundImage = "url(/Graphics/Characters/niko_finale.png)"
 
-//fungsi ukuran niko yang nyesuaikan room-wrapper
+                this.ctx = this.canvas.getContext('2d');
+                this.ctx.fillStyle = '#5b4767';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                        
+                const tileSet = new Image();
+                tileSet.src = '/Graphics/Tilesets/finale.png'
 
-export function applyNikoSize(){
-    const displayScale = roomCanvas.clientWidth / roomCanvas.width
-    niko.style.width = (FRAME_W * displayScale) + 'px'
-    niko.style.height = (FRAME_H * displayScale) + 'px'
+                tileSet.onload = () => {
+                    this.ctx.imageSmoothingEnabled = false;
+                    this.ctx.drawImage(tileSet,
+                        5, 1400, 255, 390,
+                        60, 40, 262, 400);
 
-    niko.style.backgroundSize =
-                `${FRAME_W * 4 * displayScale}px ${FRAME_H * 4 * displayScale}px`
+                    this.ctx.drawImage(tileSet,
+                        0, 1880, 255, 390,
+                        315, 40, 262, 400);
 
-}
+                }
+                this.nikoX = 320; 
+                this.nikoY = 240
+                this.facing = 'down';
+                this.raf = null;
+                this.animframe = 0;
+                this.lastframe = 0;
+                this.lastTime = 0;
+                this.moveStack = [];
+                this.paused = false;
+            }
+            gameLoop = (timestamp) =>{
+            
+                    const dt = Math.min((timestamp - this.lastTime) / 1000, 0.05)
+                
+                    this.lastTime = timestamp
+                    let dx = 0, dy = 0
+                    const activeKey = this.moveStack [this.moveStack.length - 1]
+                    if(activeKey == 'w') dy -= 1
+                    else if(activeKey == 's') dy += 1
+                    else if(activeKey == 'a') dx -= 1
+                    else if(activeKey == 'd') dx += 1
+                
+                    const moving = dx !== 0 || dy !== 0
+                    const displayScale = this.canvas.clientWidth/this.canvas.width
+                
+                    if(moving){
+                        const len = Math.sqrt(dx*dx + dy*dy)
+                        const moveX = (dx/len) * SPEED * dt
+                        const moveY = (dy /len) *SPEED * dt
+                
+                        if(!isColliding(this.nikoX + moveX, this.nikoY)) this.nikoX += moveX
+                        if(!isColliding(this.nikoX, this.nikoY + moveY)) this.nikoY += moveY
+                        if(dy < 0) this.facing = 'up'
+                        else if (dy > 0) this.facing = 'down'
+                        else if (dx < 0) this.facing = 'left'
+                        else if (dx > 0) this.facing = 'right'
+                
+                        if (timestamp - this.lastframe > FRAME_INTERVAL){
+                            this.animframe = (this.animframe + 1) % 4
+                            this.lastframe = timestamp
+                
+                        }
+                        
+                        
+                    }else{
+                        this.animframe = 0
+                    }
+                    this.niko.style.left = this.nikoX * displayScale + 'px'
+                    this.niko.style.top = this.nikoY * displayScale + 'px'
+                
+                    this.niko.style.backgroundPosition = `-${this.animframe * FRAME_W * displayScale}px -${ROW[this.facing] * FRAME_H * displayScale}px `
+                    this.raf = requestAnimationFrame(this.gameLoop)
+                
+                
+            }
+            onKeyDown = (e) =>{
+                if(this.paused) return;
+                const k = e.key.toLowerCase()
+                    if (k in keys) {
+                        keys[k] = true
+                        if(!this.moveStack.includes(k)) this.moveStack.push(k)
+                
+                    }
+            }
+            onKeyUp = (e) => {
+                const k = e.key.toLowerCase()
+                    if (k in keys) {
+                        keys[k] = false
+                        const idx = this.moveStack.indexOf(k)
+                        if (idx !== -1) this.moveStack.splice(idx, 1)
+                    } 
+            }
+            applyNikoSize(){
+                const displayScale = this.canvas.clientWidth / this.canvas.width
+                this.niko.style.width = (FRAME_W * displayScale) + 'px'
+                this.niko.style.height = (FRAME_H * displayScale) + 'px'
 
-applyNikoSize()
-window.addEventListener('resize', applyNikoSize)
-
-const ro = new ResizeObserver(applyNikoSize)
-ro.observe(roomCanvas)
-
-function gameLoop(timestamp){
-    const dt = Math.min((timestamp - lastTime) / 1000, 0.05)
-  
-    lastTime = timestamp
-    let dx = 0, dy = 0
-    const activeKey = moveStack [moveStack.length - 1]
-    if(activeKey == 'w') dy -= 1
-    else if(activeKey == 's') dy += 1
-    else if(activeKey == 'a') dx -= 1
-    else if(activeKey == 'd') dx += 1
-
-    const moving = dx !== 0 || dy !== 0
-    const displayScale = roomCanvas.clientWidth/roomCanvas.width
-
-    if(moving){
-        const len = Math.sqrt(dx*dx + dy*dy)
-        const moveX = (dx/len) * SPEED * dt
-        const moveY = (dy /len) *SPEED * dt
-
-        if(!isColliding(nikoX + moveX, nikoY)) nikoX += moveX
-        if(!isColliding(nikoX, nikoY + moveY)) nikoY += moveY
-        if(dy < 0) facing = 'up'
-        else if (dy > 0) facing = 'down'
-        else if (dx < 0) facing = 'left'
-        else if (dx > 0) facing = 'right'
-
-        if (timestamp - lastframe > FRAME_INTERVAL){
-            animframe = (animframe + 1) % 4
-            lastframe = timestamp
-
+                this.niko.style.backgroundSize =
+                            `${FRAME_W * 4 * displayScale}px ${FRAME_H * 4 * displayScale}px`
+            }
+            start(){
+                if(this.raf !== null) return;
+                window.addEventListener('keydown', this.onKeyDown);
+                window.addEventListener('keyup', this.onKeyUp);
+                this.applyNikoSize();
+                this.raf = requestAnimationFrame(this.gameLoop);
+            }
+            pause(){
+                this.paused = true;
+                this.moveStack.length = 0;
+            }
+            resume(){
+                this.paused = false;
+            }
+            destroy(){
+                cancelAnimationFrame(this.raf);
+                this.raf = null;
+                window.removeEventListener('keydown', this.onKeyDown);
+                window.removeEventListener('keyup', this.onKeyUp);
+            }
         }
-        
-        
-    }else{
-        animframe = 0
-    }
-    niko.style.left = nikoX * displayScale + 'px'
-    niko.style.top = nikoY *displayScale + 'px'
 
-    niko.style.backgroundPosition = `-${animframe *FRAME_W * displayScale}px -${ROW[facing] * FRAME_H * displayScale}px `
-    requestAnimationFrame(gameLoop)
-}
-requestAnimationFrame(gameLoop)
-
-//buat ngecek koordinat canvas dari console f12 (click logger istilahnya katanya)
-roomCanvas.addEventListener('click', function(e){
-    const rect = roomCanvas.getBoundingClientRect();
-    const scaleX = roomCanvas.width / rect.width;
-    const scaleY = roomCanvas.height / rect.height;
-    const x = Math.round((e.clientX - rect.left) * scaleX);
-    const y = Math.round((e.clientY - rect.top) * scaleY);
-    console.log(`x: ${x}, y: ${y}`);
-});
 
 //collision
 

@@ -5,8 +5,12 @@ let zTop = 10;
 let active = null;
 const listeners = [];
 
-export function onChange(fn){
-    listeners.push(fn);
+export function onChange(fn) {
+    listeners.push(fn)
+    return () => {                        // fungsi pembatal
+        const i = listeners.indexOf(fn)
+        if (i !== -1) listeners.splice(i, 1)
+    }
 }
 function notify(){
     for(const fn of listeners){
@@ -58,7 +62,7 @@ function enableDragWindow(win, titlebar, area){
     })
 }
 
-export function openWindow({ id, title, content, width = 480, height = 320 }) {
+export function openWindow({ id, title, content, width = 480, height = 320, onClose }) {
 
     
     if(wins.has(id)){
@@ -145,7 +149,8 @@ export function openWindow({ id, title, content, width = 480, height = 320 }) {
         if(active === win_sec){
             active = null
         }
-        notify();
+        onClose?.()      
+        notify() 
     }
     const closeButton = win_sec.querySelector('.win-close')
     closeButton.addEventListener('click', close);
@@ -171,13 +176,9 @@ export function openWindow({ id, title, content, width = 480, height = 320 }) {
     focus();
     return win;
 }
-
-
-export function closeAll(){
-    const windows = document.getElementById('windows');
-    windows.textContent = '';
-    count = 0;
-    wins.clear();
-    active = null;
-    notify();
+export function closeAll() {
+    for (const win of [...wins.values()]) win.close()
+    count = 0
+    active = null
+    notify()
 }

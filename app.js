@@ -1,4 +1,3 @@
-import { applyNikoSize } from './script/room.js'
 import { get, set } from './script/save.js';
 import { runBootLog, sleep } from './script/boot.js';
 import { showLogin } from './script/login.js';
@@ -29,7 +28,7 @@ button.onclick = function (){
     exceptSection.forEach(section => {
         section.classList.remove('hidden-content')
     })
-    applyNikoSize()
+    
     startAutoscroll();
    
 }

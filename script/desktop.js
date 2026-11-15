@@ -1,8 +1,8 @@
 import { powerOff } from './boot.js'
 import { get, set } from './save.js'
 import { initTaskbar } from './taskbar.js';
-import { openWindow } from './windows.js';
-
+import { openWindow, onChange } from './windows.js';
+import { Room } from './room.js';
 const  PAD = 16;
 const CELL = 96;
 const DRAG_START = 4;
@@ -15,11 +15,43 @@ const ICONS = [
     { id: 'shutdown', label: 'Shut down',    icon: '/world_machine/desktop_icon/exit.png',      open: powerOff },
 ]
 
-function openOneShot() {
-    // sementara: sembunyikan desktop supaya halaman lama terlihat
-    document.getElementById('desktop').hidden = true
-}
+let room = null
 
+function openOneShot() {
+    // kamar sudah ada → cukup munculkan jendelanya, jangan buat kamar kedua
+    if (room) {
+        openWindow({ id: 'oneshot' })
+        return
+    }
+
+    // wadah kosong, lalu Room mengisinya dengan canvas dan Niko
+    const wadah = document.createElement('div')
+    wadah.className = 'room-host'
+    room = new Room(wadah)
+
+    // masukkan wadah ke jendela baru
+    const win = openWindow({
+        id: 'oneshot',
+        title: 'OneShot.exe',
+        content: wadah,
+        width: 668,
+        height: 544,
+        onClose: () => {
+            stopWatch()       // cabut listener papan pengumuman
+            room.destroy()    // padamkan loop dan keyboard
+            room = null       // supaya pembukaan berikutnya membuat kamar baru
+        },
+    })
+
+    // jendela aktif → kamar jalan; tidak aktif → kamar pause
+    const stopWatch = onChange((list, activeEl) => {
+        if (activeEl === win.win_sec) room.resume()
+        else room.pause()
+    })
+
+    // terakhir: kamar sudah ada di halaman, jadi ukuran Niko bisa dihitung
+    room.start()
+}
 function enableDrag(btn, item, desktop){
     btn.addEventListener('pointerdown', (e) => {
         if(e.button !== 0){
