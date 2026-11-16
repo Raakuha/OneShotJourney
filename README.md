@@ -12,20 +12,20 @@ Masih dalam pengerjaan. Screenshot di bawah diambil dari versi yang berjalan di 
 
 **Layar boot.** Tombol power menyalakan lampu, lalu muncul BIOS palsu yang membaca info perangkat pengunjung: jumlah core CPU, GPU, resolusi layar, baterai, bahasa, dan zona waktu.
 
-![Layar boot](docs/screenshots/01-boot.webp)
+![Layar boot](screenshot/Screenshot%202026-11-16%20144617.png)
 
 **Login.** Nama pengunjung diingat. Kunjungan berikutnya langsung disapa "Welcome back".
 
-![Login](docs/screenshots/02-login.webp)
+![Login](screenshot/Screenshot%202026-11-16%20144629.png)
 
 **Desktop.** Ikon bisa digeser dan menempel ke grid, dan posisinya tersimpan. Taskbar berisi tombol Start, daftar jendela yang terbuka, jam dan tanggal, serta lampu yang "parkir" di pojok kanan.
 
-![Desktop](docs/screenshots/03-desktop.webp)
+![Desktop](screenshot/Screenshot%202026-11-16%20144650.png)
 
 **OneShot.exe.** Kamar Niko berjalan di dalam jendela. Niko digerakkan dengan WASD, dan berhenti otomatis saat jendela lain sedang aktif.
 
-![OneShot.exe](docs/screenshots/04-oneshot.webp)
 
+![OneShot.exe](screenshot/Screenshot%202026-11-16%20144705.png)
 ## Yang sudah jalan
 
 - **Boot dan login**: animasi lampu, log BIOS dari info perangkat, nama tersimpan di `localStorage`.
